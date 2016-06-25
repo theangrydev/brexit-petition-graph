@@ -1,4 +1,6 @@
 .idea
 *iml
+target/
 signature_count.txt
 signature_count.json
+secret.properties

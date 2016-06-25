@@ -41,7 +41,6 @@ public class CollectNumberOfSignaturesOverTime {
     private static final String DATE_FORMAT = "EEE MMM dd HH:mm:ss Z yyyy";
 
     private final TimeSeries petition = new TimeSeries("petition");
-    private final OkHttpClient httpClient = new OkHttpClient();
     private final Path signatureCount = Paths.get("signature_count.txt");
 
     public static void main(String[] args) {
@@ -95,14 +94,15 @@ public class CollectNumberOfSignaturesOverTime {
     }
 
     private void pollVotes() {
+        System.out.println("Polling votes at " + new Date());
         try {
-            Response response = httpClient.newCall(new Request.Builder().url(PETITION_URL).build()).execute();
+            Response response = new OkHttpClient().newCall(new Request.Builder().url(PETITION_URL).build()).execute();
             String body = response.body().string();
             long signatures = new JSONObject(body).getJSONObject("data").getJSONObject("attributes").getLong("signature_count");
             Date now = new Date();
             Files.write(signatureCount, String.format("%s,%s%n", new SimpleDateFormat(DATE_FORMAT).format(now), signatures).getBytes(), CREATE, APPEND);
             petition.add(new Minute(now), signatures);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Problem polling: ");
             e.printStackTrace();
         }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -36,19 +37,21 @@ public class UpdateGithubPage {
     }
 
     private void updatePage() {
+        System.out.println("Updating page at " + new Date());
+
         ConvertResultsToJson.main(new String[0]);
         String projectPath = properties.getProperty("github.pages.project.path");
 
         try {
             Files.copy(signatureCountJson, Paths.get(projectPath).resolve("signature_count.json"), REPLACE_EXISTING);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Could not write signature_count.json");
             e.printStackTrace();
         }
 
         try {
             Runtime.getRuntime().exec(properties.getProperty("git.command"));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

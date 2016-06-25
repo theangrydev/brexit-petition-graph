@@ -29,7 +29,7 @@ import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-public class Main {
+public class CollectNumberOfSignaturesOverTime {
 
     private static final boolean LEGEND = true;
     private static final boolean TOOLTIPS = true;
@@ -38,14 +38,14 @@ public class Main {
     private static final String TIME_AXIS_LABEL = "Time";
     private static final String TITLE = "EU Referendum Rules triggering a 2nd EU Referendum";
     private static final String PETITION_URL = "https://petition.parliament.uk/petitions/131215.json";
-    private static final String DATE_FORMAT = "EEE MMM dd HH:mm:ss z yyyy";
+    private static final String DATE_FORMAT = "EEE MMM dd HH:mm:ss Z yyyy";
 
     private final TimeSeries petition = new TimeSeries("petition");
     private final OkHttpClient httpClient = new OkHttpClient();
     private final Path signatureCount = Paths.get("signature_count.txt");
 
     public static void main(String[] args) {
-        new Main().run();
+        new CollectNumberOfSignaturesOverTime().run();
     }
 
     private void run() {

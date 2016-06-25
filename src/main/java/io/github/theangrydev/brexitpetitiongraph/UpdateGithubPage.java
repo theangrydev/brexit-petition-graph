@@ -25,7 +25,6 @@ public class UpdateGithubPage {
         loadProperties();
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(this::updatePage, 0, 10, TimeUnit.MINUTES);
-        updatePage();
     }
 
     private void loadProperties() {
